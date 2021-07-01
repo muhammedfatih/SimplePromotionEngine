@@ -14,8 +14,9 @@ namespace PromotionEngine.Library.Business
             Basket = new Basket();
             Promotions = new List<IPromotionEngine>();
         }
-        public double Add(BasketProductItem basketProductItem)
+        public void Add(BasketProductItem basketProductItem)
         {
+            Basket.TotalAmount += basketProductItem.Amount;
             var index =
                 Basket.ProductItems.
                     FindIndex(
@@ -32,19 +33,20 @@ namespace PromotionEngine.Library.Business
                 Basket.ProductItems[index].Amount +=
                     basketProductItem.Amount;
             }
-            Basket.TotalAmount += basketProductItem.Amount;
-
+        }
+        public void AddPromotion(IPromotionEngine promotion)
+        {
+            Promotions.Add(promotion);
+        }
+        public double GetTotalAmount()
+        {
             var discountAmount = 0.0;
-            foreach(var promotion in Promotions)
+            foreach (var promotion in Promotions)
             {
                 discountAmount += promotion.Run(Basket);
             }
 
             return Basket.TotalAmount - discountAmount;
-        }
-        public void AddPromotion(IPromotionEngine promotion)
-        {
-            Promotions.Add(promotion);
         }
     }
 }
