@@ -19,7 +19,7 @@ namespace PromotionEngine.Library.Business.PromotionEngines
         public double Run(Basket basket)
         {
             var discountAmount = 0.0;
-            var minOccurence = 0;
+            var minOccurence = int.MaxValue;
             var doesAllBundleItemExist = true;
 
             foreach (var item in ProductItems)
