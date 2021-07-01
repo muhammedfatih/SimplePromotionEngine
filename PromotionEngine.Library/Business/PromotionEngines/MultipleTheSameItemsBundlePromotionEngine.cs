@@ -22,12 +22,15 @@ namespace PromotionEngine.Library.Business.PromotionEngines
             var discountAmount = 0.0;
             foreach (var item in basket.ProductItems)
             {
-                var numberOfPromotion = item.Quantity / Quantity;
-                var numberOfNonPromotion = item.Quantity % Quantity;
-                discountAmount +=
-                    item.Amount -
-                    FixedPrice * numberOfPromotion - 
-                    item.ProductItem.Price * numberOfNonPromotion;
+                if (SKU == item.ProductItem.SKU && Quantity <= item.Quantity)
+                {
+                    var numberOfPromotion = item.Quantity / Quantity;
+                    var numberOfNonPromotion = item.Quantity % Quantity;
+                    discountAmount +=
+                        item.Amount -
+                        FixedPrice * numberOfPromotion -
+                        item.ProductItem.Price * numberOfNonPromotion;
+                }
             }
             return discountAmount;
         }
