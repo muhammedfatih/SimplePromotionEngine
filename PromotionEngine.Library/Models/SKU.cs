@@ -2,8 +2,8 @@
 {
     public class SKU
     {
-        public string Code { get; set; }
-        public SKU(string code)
+        public char Code { get; set; }
+        public SKU(char code)
         {
             Code = code;
         }
