@@ -467,5 +467,141 @@ namespace PromotionEngine.Library.Test
             // Then
             Assert.AreEqual(23.0, basketManager.GetTotalAmount());
         }
+        [Test]
+        public void Return100AsAmountForPrerequestScenarioA()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 50.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 1);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 30.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 1);
+
+            var skuC = new SKU('C');
+            var productItemC = new ProductItem(skuC, 20.0);
+            var basketProductItemC = new BasketProductItem(productItemC, 1);
+
+            var skuD = new SKU('D');
+            var productItemD = new ProductItem(skuD, 15.0);
+            var basketProductItemD = new BasketProductItem(productItemD, 0);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemC = new BasketProductItem(productItemC, 1);
+            var bundleBasketProductItemD = new BasketProductItem(productItemD, 1);
+
+            bundle.Add(bundleBasketProductItemC);
+            bundle.Add(bundleBasketProductItemD);
+
+            var promotionA3 = new MultipleTheSameItemsBundlePromotionEngine(skuA, 3, 130.0);
+            var promotionB2 = new MultipleTheSameItemsBundlePromotionEngine(skuB, 2, 45.0);
+            var promotionCD = new DifferentItemsBundlePromotionEngine(bundle, 30.0);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotionA3);
+            basketManager.AddPromotion(promotionB2);
+            basketManager.AddPromotion(promotionCD);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+            basketManager.Add(basketProductItemC);
+            basketManager.Add(basketProductItemD);
+
+            // Then
+            Assert.AreEqual(100.0, basketManager.GetTotalAmount());
+        }
+        [Test]
+        public void Return370AsAmountForPrerequestScenarioB()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 50.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 5);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 30.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 5);
+
+            var skuC = new SKU('C');
+            var productItemC = new ProductItem(skuC, 20.0);
+            var basketProductItemC = new BasketProductItem(productItemC, 1);
+
+            var skuD = new SKU('D');
+            var productItemD = new ProductItem(skuD, 15.0);
+            var basketProductItemD = new BasketProductItem(productItemD, 0);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemC = new BasketProductItem(productItemC, 1);
+            var bundleBasketProductItemD = new BasketProductItem(productItemD, 1);
+
+            bundle.Add(bundleBasketProductItemC);
+            bundle.Add(bundleBasketProductItemD);
+
+            var promotionA3 = new MultipleTheSameItemsBundlePromotionEngine(skuA, 3, 130.0);
+            var promotionB2 = new MultipleTheSameItemsBundlePromotionEngine(skuB, 2, 45.0);
+            var promotionCD = new DifferentItemsBundlePromotionEngine(bundle, 30.0);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotionA3);
+            basketManager.AddPromotion(promotionB2);
+            basketManager.AddPromotion(promotionCD);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+            basketManager.Add(basketProductItemC);
+            basketManager.Add(basketProductItemD);
+
+            // Then
+            Assert.AreEqual(370.0, basketManager.GetTotalAmount());
+        }
+        [Test]
+        public void Return280AsAmountForPrerequestScenarioC()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 50.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 3);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 30.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 5);
+
+            var skuC = new SKU('C');
+            var productItemC = new ProductItem(skuC, 20.0);
+            var basketProductItemC = new BasketProductItem(productItemC, 1);
+
+            var skuD = new SKU('D');
+            var productItemD = new ProductItem(skuD, 15.0);
+            var basketProductItemD = new BasketProductItem(productItemD, 1);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemC = new BasketProductItem(productItemC, 1);
+            var bundleBasketProductItemD = new BasketProductItem(productItemD, 1);
+
+            bundle.Add(bundleBasketProductItemC);
+            bundle.Add(bundleBasketProductItemD);
+
+            var promotionA3 = new MultipleTheSameItemsBundlePromotionEngine(skuA, 3, 130.0);
+            var promotionB2 = new MultipleTheSameItemsBundlePromotionEngine(skuB, 2, 45.0);
+            var promotionCD = new DifferentItemsBundlePromotionEngine(bundle, 30.0);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotionA3);
+            basketManager.AddPromotion(promotionB2);
+            basketManager.AddPromotion(promotionCD);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+            basketManager.Add(basketProductItemC);
+            basketManager.Add(basketProductItemD);
+
+            // Then
+            Assert.AreEqual(280.0, basketManager.GetTotalAmount());
+        }
+
     }
 }
