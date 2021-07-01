@@ -2,6 +2,7 @@ using NUnit.Framework;
 using PromotionEngine.Library.Business;
 using PromotionEngine.Library.Business.PromotionEngines;
 using PromotionEngine.Library.Models;
+using System.Collections.Generic;
 
 namespace PromotionEngine.Library.Test
 {
@@ -265,6 +266,206 @@ namespace PromotionEngine.Library.Test
 
             // Then
             Assert.AreEqual(19.0, basketManager.GetTotalAmount());
+        }
+        [Test]
+        public void ReturnDiscountedAmountWhenDifferentItemsBundlePromotionExistsWithoutAnyResidualItem()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 1.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 10);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 2.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 3);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemA = new BasketProductItem(productItemA, 10);
+            var bundleBasketProductItemB = new BasketProductItem(productItemB, 3);
+
+            bundle.Add(bundleBasketProductItemA);
+            bundle.Add(bundleBasketProductItemB);
+
+            var promotion = new DifferentItemsBundlePromotionEngine(bundle, 10);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotion);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+
+            // Then
+            Assert.AreEqual(10.0, basketManager.GetTotalAmount());
+        }
+        [Test]
+        public void ReturnDiscountedAmountWhenDifferentItemsBundlePromotionExistsWithResidualItem()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 1.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 10);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 2.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 3);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemA = new BasketProductItem(productItemA, 9);
+            var bundleBasketProductItemB = new BasketProductItem(productItemB, 2);
+
+            bundle.Add(bundleBasketProductItemA);
+            bundle.Add(bundleBasketProductItemB);
+
+            var promotion = new DifferentItemsBundlePromotionEngine(bundle, 10);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotion);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+
+            // Then
+            Assert.AreEqual(13.0, basketManager.GetTotalAmount());
+        }
+        [Test]
+        public void ReturnDiscountedAmountWhenDifferentItemsBundlePromotionWithMultipleAdditionExistsWithoutAnyResidualItem()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 1.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 10);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 2.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 3);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemA = new BasketProductItem(productItemA, 10);
+            var bundleBasketProductItemB = new BasketProductItem(productItemB, 3);
+
+            bundle.Add(bundleBasketProductItemA);
+            bundle.Add(bundleBasketProductItemB);
+
+            var promotion = new DifferentItemsBundlePromotionEngine(bundle, 10.0);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotion);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+            basketManager.Add(basketProductItemB);
+
+            // Then
+            Assert.AreEqual(20.0, basketManager.GetTotalAmount());
+        }
+        [Test]
+        public void ReturnDiscountedAmountWhenDifferentItemsBundlePromotionWithMultipleAdditionExistsWithResidualItem()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 1.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 10);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 2.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 3);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemA = new BasketProductItem(productItemA, 9);
+            var bundleBasketProductItemB = new BasketProductItem(productItemB, 2);
+
+            bundle.Add(bundleBasketProductItemA);
+            bundle.Add(bundleBasketProductItemB);
+
+            var promotion = new DifferentItemsBundlePromotionEngine(bundle, 10);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotion);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+            basketManager.Add(basketProductItemB);
+
+            // Then
+            Assert.AreEqual(26.0, basketManager.GetTotalAmount());
+        }
+        [Test]
+        public void ReturnDiscountedAmountWhenDifferentItemsBundlePromotionWithThirdProductItemExistsWithResidualItem()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 1.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 10);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 2.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 3);
+
+            var skuC = new SKU('C');
+            var productItemC = new ProductItem(skuC, 3.0);
+            var basketProductItemC = new BasketProductItem(productItemC, 2);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemA = new BasketProductItem(productItemA, 9);
+            var bundleBasketProductItemB = new BasketProductItem(productItemB, 2);
+
+            bundle.Add(bundleBasketProductItemA);
+            bundle.Add(bundleBasketProductItemB);
+
+            var promotion = new DifferentItemsBundlePromotionEngine(bundle, 10);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotion);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+            basketManager.Add(basketProductItemC);
+
+            // Then
+            Assert.AreEqual(19.0, basketManager.GetTotalAmount());
+        }
+        [Test]
+        public void ReturnDiscountedAmountWhenDifferentItemsBundlePromotionWithDifferentMinOccurenceExistsWithResidualItem()
+        {
+            // Given
+            var skuA = new SKU('A');
+            var productItemA = new ProductItem(skuA, 1.0);
+            var basketProductItemA = new BasketProductItem(productItemA, 10);
+
+            var skuB = new SKU('B');
+            var productItemB = new ProductItem(skuB, 2.0);
+            var basketProductItemB = new BasketProductItem(productItemB, 3);
+
+            var skuC = new SKU('C');
+            var productItemC = new ProductItem(skuC, 3.0);
+            var basketProductItemC = new BasketProductItem(productItemC, 2);
+
+            var bundle = new List<BasketProductItem>();
+            var bundleBasketProductItemA = new BasketProductItem(productItemA, 5);
+            var bundleBasketProductItemB = new BasketProductItem(productItemB, 2);
+
+            bundle.Add(bundleBasketProductItemA);
+            bundle.Add(bundleBasketProductItemB);
+
+            var promotion = new DifferentItemsBundlePromotionEngine(bundle, 10);
+
+            var basketManager = new BasketManager();
+            basketManager.AddPromotion(promotion);
+
+            // When
+            basketManager.Add(basketProductItemA);
+            basketManager.Add(basketProductItemB);
+            basketManager.Add(basketProductItemC);
+
+            // Then
+            Assert.AreEqual(23.0, basketManager.GetTotalAmount());
         }
     }
 }
