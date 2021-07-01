@@ -1,4 +1,5 @@
-﻿using PromotionEngine.Library.Models;
+﻿using PromotionEngine.Library.Business.PromotionEngines;
+using PromotionEngine.Library.Models;
 using System.Collections.Generic;
 
 namespace PromotionEngine.Library.Business

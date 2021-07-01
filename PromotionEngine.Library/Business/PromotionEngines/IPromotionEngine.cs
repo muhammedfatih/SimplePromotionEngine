@@ -1,6 +1,6 @@
 ﻿using PromotionEngine.Library.Models;
 
-namespace PromotionEngine.Library.Business
+namespace PromotionEngine.Library.Business.PromotionEngines
 {
     public interface IPromotionEngine
     {
